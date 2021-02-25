@@ -34,7 +34,7 @@ export class Miner {
       // where if the solution is random than the majority of miners will be able to get the solution on average faster
     // once it gets the solutions (what needs to be added the nonce for the hex representation to start with 0000)
     // it returns the solution
-    // this can then be checked very easily by taking the nonce and solution and verifiying the first four digits are 0000
+    // this can then be checked very easily by taking the nonce and solution and verifying the first four digits are 0000
 
     // the first minor to guess the solution wins 1 of the coin as a reward
     // the solution needs to be stored with the block

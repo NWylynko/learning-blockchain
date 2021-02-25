@@ -4,12 +4,24 @@ import { Transaction } from "./Transaction";
 export class Block {
   // a block holds the transaction and the previous hash, the timestamp is only for ordering purposes and isn't needed but is helpful
 
-  public nonce = Math.round(Math.random() * 999999999);
-
   constructor(
+    // stores the hash of the previous block
     public prevHash: string,
+
+    // stores the transaction requested, this could and should be changed to a list
     public transaction: Transaction,
-    public timestamp = Date.now()
+
+    // the timestamp of when the block was created, purely for ordering purposes
+    public timestamp = Date.now(),
+
+    // a nonce is a random number that when added to the solution and hashed the first 4 bytes are 0000 (or whatever the difficulty is)
+    public nonce = Math.round(Math.random() * 999999999),
+
+    // this is the solution, the first miner to guess the number "wins"
+    public solution?: number,
+
+    // the "winer" miner adds there public key to claim the prize
+    public minerWinnerPublicKey?: string
   ) {}
 
   get hash() {

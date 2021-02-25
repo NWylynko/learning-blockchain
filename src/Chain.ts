@@ -2,6 +2,7 @@ import * as crypto from "crypto";
 import { Transaction } from "./Transaction";
 import { Block } from "./Block";
 import { satoshi } from "./SatoshiWallet";
+import { mine } from "./MinersManager"
 
 interface newBlock {
   transaction: Transaction;
@@ -30,32 +31,6 @@ export class Chain {
     return this.chain[this.chain.length - 1];
   }
 
-  mine(nonce: number) {
-    // this is the function to "mine" the new block and verify that it is legit (im not sure what makes it "legit")
-    // it basically is a guess and check function
-    // it starts at 1 and goes up until the first 4 characters in the attempt are 0000 (im not sure whats special about that)
-    // once it gets the solutions (what needs to be added the nonce for the hex representation to start with 0000)
-    // it returns the solution
-    // this can then be checked very easily by taking the nonce and solution and verifiying the first four digits ate 0000
-    // the first minor to guess the solution wins 1 of the coin as a reward
-    let solution = 1;
-    console.log("⛏  mining...");
-
-    while (true) {
-      const hash = crypto.createHash("MD5");
-      hash.update((nonce + solution).toString()).end();
-
-      const attempt = hash.digest("hex");
-
-      if (attempt.substr(0, 4) === "0000") {
-        console.log(`Solved: ${solution}`);
-        return solution;
-      }
-
-      solution += 1;
-    }
-  }
-
   addBlock({ transaction, senderPublicKey, signature }: newBlock) {
     // this runs on the nodes the transaction is the newly requested block getting added to the chain
 
@@ -71,8 +46,16 @@ export class Chain {
       // if the transaction is valid it wraps it in a black with the last block hash and the new transaction
       const newBlock = new Block(this.lastBlock.hash, transaction);
 
-      // this then gets "mined" which im still unsure about
-      const solution = this.mine(newBlock.nonce);
+      // this then gets "mined" to create proof of work
+      // the solution needs to be added to the block for later verification
+      const { solution, publicKey } = mine(newBlock.nonce);
+
+      // add the solution and public key of the miner to the new block
+      newBlock.solution = solution;
+      newBlock.minerWinnerPublicKey = publicKey;
+
+      // all the nodes running a copy of the chain needs to come to a consensus that this was the winner
+      // im not entirely sure how to do this
 
       // once its been mined it then pushes this to the chain and is cemented in stone basically
       this.chain.push(newBlock);

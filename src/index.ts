@@ -2,6 +2,7 @@ import "source-map-support/register";
 import { Chain } from "./Chain";
 import { Wallet } from "./Wallet";
 import { satoshi } from "./SatoshiWallet";
+import { Miner1 } from "./MinersManager"
 
 const bob = new Wallet();
 const alice = new Wallet();
@@ -33,5 +34,6 @@ console.log(`bob's balance: ${bob.balance}`);
 console.log(`satoshi's closing balance: ${satoshi.balance}`);
 console.log(`bob's closing balance: ${bob.balance}`);
 console.log(`alice's closing balance: ${alice.balance}`);
+console.log(`Miner 1 balance: ${Miner1.balance}`)
 
 console.log(Chain.instance);

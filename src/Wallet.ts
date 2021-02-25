@@ -66,6 +66,12 @@ export class Wallet {
     let balance = 0; // everyone's accounts started at 0 at the start of time
 
     Chain.instance.chain.forEach((block) => {
+
+      // if this wallet is attached to the miner then they get 1 coin for getting the solution
+      if (block.minerWinnerPublicKey === this.publicKey) {
+        balance += 1
+      }
+
       if (block.transaction.payer === this.publicKey) {
         // if they are the payer they are sending money
         balance -= block.transaction.amount;

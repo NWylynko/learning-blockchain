@@ -13,6 +13,7 @@ export class Block {
   ) {}
 
   get hash() {
+    // this getter returns this block as a hash so it can be used in the next block to create integrity that the chain is untampered
     const str = JSON.stringify(this);
     const hash = crypto.createHash("SHA256");
     hash.update(str).end();

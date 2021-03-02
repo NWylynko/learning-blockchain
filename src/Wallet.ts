@@ -56,4 +56,25 @@ export class Wallet {
       signature,
     });
   }
+
+  get balance(): number {
+    // this getter will go through the entire chain and get the balance of the account
+    // it doesn't verify anything (i think maybe it needs to verify that the solution + nonce have the hex starting with 0000)
+    // or maybe it needs to hash each block and check that the next block has the prevHash the same as the one before it
+    // maybe it needs to do both
+
+    let balance = 0; // everyone's accounts started at 0 at the start of time
+
+    Chain.instance.chain.forEach((block) => {
+      if (block.transaction.payer === this.publicKey) {
+        // if they are the payer they are sending money
+        balance -= block.transaction.amount;
+      } else if (block.transaction.payee === this.publicKey) {
+        // if they are the payee they are receiving money
+        balance += block.transaction.amount;
+      }
+    });
+
+    return balance;
+  }
 }

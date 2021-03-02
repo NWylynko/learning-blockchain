@@ -31,7 +31,7 @@ export class Chain {
   }
 
   mine(nonce: number) {
-    // this is the function to "mine" the new block and verify that it is legit
+    // this is the function to "mine" the new block and verify that it is legit (im not sure what makes it "legit")
     // it basically is a guess and check function
     // it starts at 1 and goes up until the first 4 characters in the attempt are 0000 (im not sure whats special about that)
     // once it gets the solutions (what needs to be added the nonce for the hex representation to start with 0000)
@@ -58,6 +58,8 @@ export class Chain {
 
   addBlock({ transaction, senderPublicKey, signature }: newBlock) {
     // this runs on the nodes the transaction is the newly requested block getting added to the chain
+
+    // i think this needs to do what the wallets balance getter does and verify that the wallet has the funds to make the transaction (maybe thats what mining is ????)
 
     // this creates a "verifier" with the hash of the transaction which than can be verified against
     // the signature and senderPublicKey to verify that the transaction hasn't been tampered with
